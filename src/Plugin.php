@@ -18,8 +18,10 @@ final class Plugin
 			add_action('admin_notices', [$this, 'dependency_notice']);
 			return;
 		}
-		require_once $dependency_interface;
-		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/ConditionalContentModule.php';
+		add_action('after_setup_theme', static function () use ($dependency_interface): void {
+			require_once $dependency_interface;
+			require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/ConditionalContentModule.php';
+		}, 20);
 
 		add_action('divi_visual_builder_assets_before_enqueue_scripts', [$this, 'register_visual_builder_assets']);
 	}
