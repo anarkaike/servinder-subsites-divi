@@ -112,6 +112,11 @@ if [[ "$http_code" != "200" ]]; then
 	printf 'Guia Gay São Paulo returned HTTP %s.\n' "$http_code" >&2
 	exit 1
 fi
+divi_interface="$(ssh "$remote_host" "docker exec '$container_name' sh -lc 'test -r /var/www/html/wp-content/themes/Divi/includes/builder-5/server/Framework/DependencyManagement/Interfaces/DependencyInterface.php && echo available'")"
+if [[ "$divi_interface" != "available" ]]; then
+	printf 'Divi 5 dependency interface is unavailable in the active theme.\n' >&2
+	exit 1
+fi
 
 release_complete=true
-printf 'Released %s from %s\nPackage: %s\nSHA-256: %s\nBlogs verified: %s\nContainer: %s\nGuia HTTP: %s\nBackup: %s/%s-before.tgz\n' "$plugin_slug" "$head_commit" "$local_release_dir/$zip_name" "$local_hash" "$(printf '%s\n' "$site_urls" | wc -l | tr -d ' ')" "$container_health" "$http_code" "$remote_release_dir" "$plugin_slug"
+printf 'Released %s from %s\nPackage: %s\nSHA-256: %s\nBlogs verified: %s\nContainer: %s\nGuia HTTP: %s\nDivi dependency interface: %s\nBackup: %s/%s-before.tgz\n' "$plugin_slug" "$head_commit" "$local_release_dir/$zip_name" "$local_hash" "$(printf '%s\n' "$site_urls" | wc -l | tr -d ' ')" "$container_health" "$http_code" "$divi_interface" "$remote_release_dir" "$plugin_slug"
