@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Servinder\Subsites\Divi\Divi5\ConditionalContentModule;
 
 $assert = static function (bool $condition, string $message): void {
