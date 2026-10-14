@@ -2,6 +2,11 @@
 
 Optional Divi 5 adapter for [Servinder Subsites](https://github.com/anarkaike/servinder-subsites).
 
+The free Servinder WordPress integration plugin connects a store/site to
+Servinder services. This adapter is a separate feature product and requires
+the separately installable Servinder Subsites plugin; it does not replace that
+plugin or make it a free requirement.
+
 The **Conteúdo por subsite** module wraps rich content in a native Divi 5 Visual Builder module. Editors choose published subsites by name and choose whether to include or exclude that selection. Front-end visibility delegates to `servinder_subsites_is_block_visible()`, so the Divi module follows the same active context, validation, and extension filters as Gutenberg blocks.
 
 Modules with Divi Loop support, including **Grupo** and **Carrossel de Grupos**, also receive **Visibilidade por subsite** controls. Existing loop settings continue to select the post types, taxonomies, terms, and items to display. Their query results are scoped to content visible and available in the active subsite, and the module can be limited to all, selected, or all except selected subsites. Existing modules default to all subsites.
@@ -10,10 +15,10 @@ Modules with Divi Loop support, including **Grupo** and **Carrossel de Grupos**,
 
 - WordPress 6.5+
 - PHP 8.1+
-- Servinder Subsites core plugin
+- Servinder Subsites plugin (separate product)
 - Divi 5
 
-The adapter has no runtime dependency on WooCommerce, ACF, or other extensions. It loads after the active theme is available, then registers the module through Divi 5’s module dependency tree. If Divi 5 or the core plugin is unavailable, it displays an administrator notice and does not load Divi integration code.
+The adapter has no runtime dependency on WooCommerce, ACF, or other extensions. It loads after the active theme is available, then registers the module through Divi 5’s module dependency tree. If Divi 5 or Servinder Subsites is unavailable, it displays an administrator notice and does not load Divi integration code.
 
 ## Use
 

@@ -32,7 +32,7 @@ final class Plugin
 		if (!current_user_can('activate_plugins')) {
 			return;
 		}
-		echo '<div class="notice notice-warning"><p>' . esc_html__('Servinder Subsites — Divi requires the Servinder Subsites core plugin and Divi 5.', 'servinder-subsites-divi') . '</p></div>';
+		echo '<div class="notice notice-warning"><p>' . esc_html__('Servinder Subsites — Divi is a separate feature plugin and requires Servinder Subsites and Divi 5. The free Servinder WordPress integration plugin is separate.', 'servinder-subsites-divi') . '</p></div>';
 	}
 
 	public function register_visual_builder_assets(): void
