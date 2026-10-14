@@ -106,6 +106,11 @@ $group_metadata = $module::add_loop_visibility_attributes([
 ]);
 $assert(isset($group_metadata['attributes']['servinderSubsiteTargets'], $group_metadata['attributes']['servinderSubsiteMode']), 'Group Carousel metadata did not receive the subsite visibility controls.');
 $assert('all' === $group_metadata['attributes']['servinderSubsiteMode']['default']['innerContent']['desktop']['value'], 'New loop modules do not default to all subsites.');
+$mode_item = $group_metadata['attributes']['servinderSubsiteMode']['settings']['innerContent']['item'] ?? [];
+$assert('all' === ($mode_item['defaultAttr']['desktop']['value'] ?? null), 'The Divi select field does not declare its default value using the field contract.');
+$assert('divi/select' === ($mode_item['component']['name'] ?? ''), 'The loop visibility mode is not registered with Divi’s select field.');
+$assert(3 === count($mode_item['component']['props']['options'] ?? []), 'The loop visibility selector is missing an option.');
+$assert(!isset($group_metadata['attributes']['servinderSubsiteMode']['selector'], $mode_item['features']['preset']), 'The loop visibility selector contains unsupported rendering or preset metadata.');
 $unrelated_metadata = $module::add_loop_visibility_attributes(['name' => 'divi/text', 'attributes' => ['module' => ['settings' => []]]]);
 $assert(!isset($unrelated_metadata['attributes']['servinderSubsiteMode']), 'A non-loop module received loop visibility controls.');
 $visible_loop_attrs = [

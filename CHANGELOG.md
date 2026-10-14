@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- Align the Loop visibility fields with Divi 5's field contract, including explicit field defaults and supported feature flags.
+- Remove unrelated render selectors and preset metadata from the visibility controls.
+- Extend the integrated smoke checks to guard the Divi select field definition.
+
 ## 0.4.0
 
 - Expose per-subsite primary, accent, surface, and text colors as Divi dynamic color sources.

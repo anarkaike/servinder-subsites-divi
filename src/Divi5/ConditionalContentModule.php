@@ -99,7 +99,6 @@ final class ConditionalContentModule implements DependencyInterface
 	{
 		return [
 			'type' => 'object',
-			'selector' => '{{selector}}',
 			'default' => ['innerContent' => ['desktop' => ['value' => $default]]],
 			'settings' => [
 				'innerContent' => [
@@ -111,13 +110,12 @@ final class ConditionalContentModule implements DependencyInterface
 						'groupSlug' => 'servinderSubsitesLoop',
 						'priority' => 'divi/checkboxes' === $component ? 1 : 2,
 						'render' => true,
-						'features' => ['sticky' => false, 'responsive' => false, 'dynamicContent' => false, 'preset' => 'content'],
+						'defaultAttr' => ['desktop' => ['value' => $default]],
+						'features' => ['hover' => false, 'responsive' => false, 'sticky' => false],
 						'component' => ['name' => $component, 'type' => 'field', 'props' => ['options' => $options]],
 					],
 				],
 			],
-			'attributes' => [],
-			'childrenSanitizer' => 'et_core_esc_previously',
 		];
 	}
 

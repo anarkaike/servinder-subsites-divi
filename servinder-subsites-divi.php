@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Servinder Subsites — Divi
  * Description: Divi 5 modules and loop visibility powered by Servinder Subsites.
- * Version: 0.4.0
+ * Version: 0.5.0
  * Requires at least: 6.5
  * Requires PHP: 8.1
  * Requires Plugins: servinder-subsites
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-define('SERVINDER_SUBSITES_DIVI_VERSION', '0.4.0');
+define('SERVINDER_SUBSITES_DIVI_VERSION', '0.5.0');
 define('SERVINDER_SUBSITES_DIVI_FILE', __FILE__);
 define('SERVINDER_SUBSITES_DIVI_PATH', plugin_dir_path(__FILE__));
 define('SERVINDER_SUBSITES_DIVI_URL', plugin_dir_url(__FILE__));
