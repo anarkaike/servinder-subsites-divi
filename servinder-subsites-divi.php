@@ -24,6 +24,6 @@ define('SERVINDER_SUBSITES_DIVI_URL', plugin_dir_url(__FILE__));
 
 require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Plugin.php';
 
-add_action('plugins_loaded', static function (): void {
+add_action('after_setup_theme', static function (): void {
 	(new Servinder\Subsites\Divi\Plugin())->register();
 }, 20);

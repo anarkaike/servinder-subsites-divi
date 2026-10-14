@@ -11,7 +11,7 @@ The first module, **Conteúdo por subsite**, wraps rich content in a native Divi
 - Servinder Subsites core plugin
 - Divi 5
 
-The adapter has no runtime dependency on WooCommerce, ACF, or other extensions. If Divi 5 or the core plugin is unavailable, it displays an administrator notice and does not load Divi integration code.
+The adapter has no runtime dependency on WooCommerce, ACF, or other extensions. It loads after the active theme is available, then registers the module through Divi 5’s module dependency tree. If Divi 5 or the core plugin is unavailable, it displays an administrator notice and does not load Divi integration code.
 
 ## Use
 
@@ -38,7 +38,7 @@ npm ci
 npm run build
 ```
 
-The committed `visual-builder/build/servinder-subsites-divi.js` is the production asset. Run `bin/release.sh` from a clean `main` checkout to package, back up, install network-wide, and verify the adapter on the Servinder WordPress network.
+The committed `visual-builder/build/servinder-subsites-divi.js` is the production asset. Run `bin/release.sh` from a clean `main` checkout to package, back up, install network-wide, verify the shared visibility behavior, confirm network activation on every blog, and check WordPress health and the Guia public route. The CLI smoke verifies core visibility and selector data; verify Visual Builder registration in Divi itself before treating the editor integration as confirmed.
 
 ## Scope
 
