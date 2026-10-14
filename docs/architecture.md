@@ -6,6 +6,8 @@ The target selector is populated from published Servinder Subsites records in 10
 
 Content is evaluated server-side. Without an active published subsite context, the core API returns false and the conditional module renders nothing. User-authored shortcodes run only after the rule allows the content. The module never changes a post's global status or subsite records.
 
+The production WP-CLI smoke invokes the adapter's conditional rendering method against an active published subsite. It checks include and exclude outcomes, confirms a shortcode runs for visible content, and confirms it is not evaluated when content is hidden. This exercises the server rule mapping without relying on Visual Builder UI automation; it does not prove that a saved Divi page serializes module attributes correctly or that the module wrapper renders on a public page.
+
 ## Extension points
 
 `servinder_subsites_divi_visibility_rule` can adjust a proposed rule; the core API validates selected subsite IDs. `servinder_subsites_divi_is_visible` can further constrain the visibility decision. `servinder_subsites_divi_rendered_content` can adjust rendered output after visibility has passed. These adapter filters do not bypass the core rule unless a site integrator explicitly changes the final decision.

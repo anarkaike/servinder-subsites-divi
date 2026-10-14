@@ -31,4 +31,24 @@ $assert(true === $visible, 'Included content was not visible for the active subs
 $assert(false === $hidden && false === $excluded, 'An include or exclude condition returned the wrong visibility.');
 $assert(true === $elsewhere, 'Exclude mode hid a subsite that was not selected.');
 
-WP_CLI::success('Published-subsite selector options, shared include/exclude visibility, and fail-closed behavior passed. Divi module loading is verified by frontend requests.');
+$module = 'Servinder\\Subsites\\Divi\\Divi5\\ConditionalContentModule';
+$shortcode_calls = 0;
+add_shortcode('servinder_subsites_divi_smoke', static function () use (&$shortcode_calls): string {
+	++$shortcode_calls;
+	return 'DIVI_CONDITIONAL_SMOKE_OUTPUT';
+});
+$included_output = $module::render_conditional_content(
+	'[servinder_subsites_divi_smoke]',
+	'include',
+	[(int) $active_subsite->ID]
+);
+$assert('DIVI_CONDITIONAL_SMOKE_OUTPUT' === $included_output, 'The Divi adapter did not render shortcode content for a matching include rule.');
+$assert(1 === $shortcode_calls, 'The shortcode should run once after an allowed include rule.');
+$assert('' === $module::render_conditional_content('[servinder_subsites_divi_smoke]', 'include', [PHP_INT_MAX]), 'The Divi adapter rendered content for a non-matching include rule.');
+$assert('' === $module::render_conditional_content('[servinder_subsites_divi_smoke]', 'exclude', [(int) $active_subsite->ID]), 'The Divi adapter rendered content excluded from the active subsite.');
+$assert(1 === $shortcode_calls, 'The Divi adapter executed a shortcode while conditional content was hidden.');
+$excluded_output = $module::render_conditional_content('[servinder_subsites_divi_smoke]', 'exclude', [PHP_INT_MAX]);
+$assert('DIVI_CONDITIONAL_SMOKE_OUTPUT' === $excluded_output, 'The Divi adapter did not render content for an allowed exclude rule.');
+$assert(2 === $shortcode_calls, 'The shortcode should run once for each allowed Divi render.');
+
+WP_CLI::success('Published-subsite selector options, core and Divi adapter include/exclude rendering, shortcode gating, fail-closed behavior, and module loading passed.');
