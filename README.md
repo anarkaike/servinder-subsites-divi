@@ -34,6 +34,8 @@ For core visibility behavior and API contracts, see the [core API reference](htt
 
 ## Development
 
+See the [documentation index](docs/README.md) for architecture, API contracts, Divi validation evidence, and the operational network map.
+
 ```sh
 cd visual-builder
 npm ci
