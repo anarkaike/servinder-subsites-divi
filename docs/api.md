@@ -7,7 +7,7 @@ Module identifier: `servinder-subsites-divi/conditional-content`.
 The module stores:
 
 - `targetIds.innerContent.desktop.value`: selected published subsite IDs.
-- `visibilityMode.innerContent.desktop.value`: `include` or `exclude`.
+- `visibilityMode.innerContent.desktop.value`: `include` or `exclude`. Divi may serialize these select choices as indexes `0` (include) and `1` (exclude); the adapter normalizes both the labels and serialized indexes.
 - `content.innerContent.desktop.value`: rich content rendered by Divi.
 
 ## Divi Loop visibility
@@ -17,7 +17,7 @@ Loop-capable Divi 5 modules (including `divi/group` and `divi/group-carousel`) r
 - `servinderSubsiteTargets.innerContent.desktop.value`: selected published subsite IDs.
 - `servinderSubsiteMode.innerContent.desktop.value`: `all`, `include`, or `exclude`.
 
-The default is `all`, preserving existing layouts. The front-end wrapper is hidden when the active subsite fails the configured rule. The Visual Builder sends the same rule with its loop query; the adapter returns no results when it does not match and supplies the active subsite context to the core query scoping. Divi's native Loop controls continue to select post types, terms/taxonomies, users, and specific items.
+The default is `all`, preserving existing layouts. Divi may serialize these select options as indexes `0` (`all`), `1` (`include`), and `2` (`exclude`); the adapter normalizes them before evaluating visibility. The front-end wrapper is hidden when the active subsite fails the configured rule. The Visual Builder sends the same rule with its loop query; the adapter returns no results when it does not match and supplies the active subsite context to the core query scoping. Divi's native Loop controls continue to select post types, terms/taxonomies, users, and specific items.
 
 The server renderer applies `servinder_subsites_is_block_visible()` with `mode` and `subsiteIds`. No active context, unpublished targets, or an invalid rule fail closed.
 

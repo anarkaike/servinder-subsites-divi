@@ -40,7 +40,7 @@ npm ci
 npm run build
 ```
 
-The committed `visual-builder/build/servinder-subsites-divi.js` is the production asset. Run `bin/release.sh` from a clean `main` checkout to package, back up, install network-wide, verify the shared visibility behavior, confirm network activation on every blog, and check WordPress health and the Guia public route. The CLI smoke checks server-side include/exclude rendering, loop-module visibility and query scoping, and that hidden content shortcodes do not execute. Visual Builder registration, saved module attributes, and public output from an authored Divi page still require verification in Divi itself.
+The committed `visual-builder/build/servinder-subsites-divi.js` is the production asset. Run `bin/release.sh` from a clean `main` checkout to package, back up, install network-wide, verify the shared visibility behavior, confirm network activation on every blog, and check WordPress health and the Guia public route. The CLI smoke checks server-side include/exclude rendering, Divi's numeric select-index mapping, loop-module visibility and query scoping, and that hidden content shortcodes do not execute. Visual Builder registration, saved module attributes, and public output from an authored Divi page still require verification in Divi itself.
 
 ## Scope
 

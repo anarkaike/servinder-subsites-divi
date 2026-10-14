@@ -5,6 +5,7 @@
 - Add per-subsite visibility controls to Divi 5 modules that support Loop, including Group and Group Carousel.
 - Hide loop modules outside their selected subsite scope and scope loop queries to the active subsite so Divi's existing post type, taxonomy, term, and item filters select the content shown.
 - Keep existing saved modules visible everywhere by default.
+- Normalize Divi's numeric select indexes so include/exclude modes match the values actually saved by the Visual Builder.
 
 ## 0.1.1
 
