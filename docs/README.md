@@ -18,6 +18,6 @@ Este repositório é a fonte canônica do adaptador Divi. A documentação opera
 
 ## Evidência e limites atuais
 
-A lógica PHP de inclusão/exclusão, o mapeamento dos selects numéricos do Divi e o escopo de consultas Loop são cobertos pelo smoke integrado. A descoberta do módulo e a gravação dos atributos foram verificadas no Divi 5. Uma página de QA salva foi renderizada corretamente por `do_blocks()` no contexto correspondente, mas sua prévia HTTP autenticada mostrou apenas o shell da página. Portanto, a saída completa em uma requisição real ainda está sob investigação. Os controles de Loop também precisam de validação ponta a ponta no Visual Builder.
+A lógica PHP de inclusão/exclusão, o mapeamento dos selects numéricos do Divi, o escopo de consultas Loop e os hooks de Dynamic Content estão cobertos pelo smoke integrado. A descoberta do módulo e a gravação dos atributos foram verificadas no Divi 5. Uma página de QA salva foi renderizada corretamente por `do_blocks()` no contexto correspondente, mas sua prévia HTTP autenticada mostrou apenas o shell da página. Portanto, a saída completa em uma requisição real ainda está sob investigação. A seleção do campo dinâmico em um layout Divi salvo e a saída pública ainda precisam de validação ponta a ponta no Visual Builder.
 
 Os detalhes, datas e artefatos dessa verificação estão em [Divi 5 — validação no ambiente](divi-5.md); o mapa central registra o estado do release e da instalação.

@@ -21,10 +21,27 @@ final class Plugin
 		require_once $dependency_interface;
 		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/ConditionalContentModule.php';
 
+		add_action('init', [$this, 'register_dynamic_content'], 20);
 		add_action('divi_visual_builder_assets_before_enqueue_scripts', [$this, 'register_visual_builder_assets']);
 		add_filter('block_type_metadata_settings', [\Servinder\Subsites\Divi\Divi5\ConditionalContentModule::class, 'add_loop_visibility_attributes']);
 		add_filter('divi_module_wrapper_render', [\Servinder\Subsites\Divi\Divi5\ConditionalContentModule::class, 'filter_loop_module_wrapper'], 10, 2);
 		add_filter('divi_module_options_loop_post_type_results_query_args', [\Servinder\Subsites\Divi\Divi5\ConditionalContentModule::class, 'filter_loop_query_args'], 10, 2);
+	}
+
+	public function register_dynamic_content(): void
+	{
+		$base_class = '\\ET\\Builder\\Packages\\Module\\Layout\\Components\\DynamicContent\\DynamicContentOptionBase';
+		$option_interface = '\\ET\\Builder\\Packages\\Module\\Layout\\Components\\DynamicContent\\DynamicContentOptionInterface';
+		$elements_class = '\\ET\\Builder\\Packages\\Module\\Layout\\Components\\DynamicContent\\DynamicContentElements';
+		if (!class_exists($base_class) || !interface_exists($option_interface) || !class_exists($elements_class)) {
+			return;
+		}
+
+		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/SubsiteNameDynamicContentOption.php';
+		$option_class = \Servinder\Subsites\Divi\Divi5\SubsiteNameDynamicContentOption::class;
+		if (class_exists($option_class)) {
+			(new $option_class())->load();
+		}
 	}
 
 	public function dependency_notice(): void

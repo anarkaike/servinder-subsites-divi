@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+- Register the active subsite name as an official Divi 5 dynamic text source.
+- Resolve the value from core subsite context and allow draft contexts only in authorized previews.
+- Add the `servinder_subsites_divi_dynamic_content_value` extension filter and smoke coverage.
+
 ## 0.2.0
 
 - Add per-subsite visibility controls to Divi 5 modules that support Loop, including Group and Group Carousel.

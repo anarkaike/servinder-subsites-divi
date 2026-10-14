@@ -8,6 +8,8 @@ $assert = static function (bool $condition, string $message): void {
 
 $assert(function_exists('servinder_subsites'), 'Servinder Subsites core is not active.');
 $assert(class_exists('Servinder\\Subsites\\Divi\\Divi5\\ConditionalContentModule'), 'Divi server module did not load after the Divi dependency interface became available.');
+$dynamic_option_class = 'Servinder\\Subsites\\Divi\\Divi5\\SubsiteNameDynamicContentOption';
+$assert(class_exists($dynamic_option_class), 'The active-subsite dynamic content option did not load.');
 $options = [];
 $offset = 0;
 do {
@@ -22,6 +24,29 @@ $assert($active_subsite instanceof WP_Post, 'The smoke site has no published sub
 $options_json = wp_json_encode($options);
 $assert(is_string($options_json) && false !== json_decode($options_json), 'The Visual Builder selector options are not valid JSON.');
 add_filter('servinder_subsites_current_subsite', static fn() => $active_subsite, PHP_INT_MAX);
+$dynamic_option = new $dynamic_option_class();
+$dynamic_option->load();
+$dynamic_options = apply_filters('divi_module_dynamic_content_options', [], 0, 'edit');
+$assert(isset($dynamic_options['servinder_subsite_name']) && 'text' === $dynamic_options['servinder_subsite_name']['type'], 'The Divi dynamic text source was not registered.');
+$dynamic_data_args = ['name' => 'servinder_subsite_name', 'settings' => []];
+$dynamic_output = apply_filters('divi_module_dynamic_content_resolved_value', '', $dynamic_data_args);
+$assert(str_contains($dynamic_output, esc_html(get_the_title($active_subsite))), 'The Divi dynamic source did not resolve the active subsite name.');
+$unknown_dynamic_output = $dynamic_option->render_callback('original', ['name' => 'another_dynamic_option']);
+$assert('original' === $unknown_dynamic_output, 'The dynamic source altered another option value.');
+$no_context_filter = static fn() => null;
+add_filter('servinder_subsites_current_subsite', $no_context_filter, PHP_INT_MAX);
+$no_context_output = apply_filters('divi_module_dynamic_content_resolved_value', '', $dynamic_data_args);
+remove_filter('servinder_subsites_current_subsite', $no_context_filter, PHP_INT_MAX);
+$assert('' === $no_context_output, 'The dynamic source emitted a value without an active subsite context.');
+$dynamic_filter_called = false;
+$dynamic_value_filter = static function (string $value, string $option_name, WP_Post $subsite) use (&$dynamic_filter_called, $active_subsite): string {
+	$dynamic_filter_called = 'servinder_subsite_name' === $option_name && (int) $subsite->ID === (int) $active_subsite->ID;
+	return 'Nome filtrado';
+};
+add_filter('servinder_subsites_divi_dynamic_content_value', $dynamic_value_filter, 10, 3);
+$filtered_dynamic_output = apply_filters('divi_module_dynamic_content_resolved_value', '', $dynamic_data_args);
+remove_filter('servinder_subsites_divi_dynamic_content_value', $dynamic_value_filter, 10);
+$assert($dynamic_filter_called && str_contains($filtered_dynamic_output, 'Nome filtrado'), 'The dynamic content extension filter did not receive the active subsite value.');
 $rule = ['mode' => 'include', 'subsiteIds' => [(int) $active_subsite->ID]];
 $visible = servinder_subsites_is_block_visible($rule);
 $hidden = servinder_subsites_is_block_visible(['mode' => 'include', 'subsiteIds' => [PHP_INT_MAX]]);
@@ -113,4 +138,4 @@ $excluded_output = $module::render_conditional_content('[servinder_subsites_divi
 $assert('DIVI_CONDITIONAL_SMOKE_OUTPUT' === $excluded_output, 'The Divi adapter did not render content for an allowed exclude rule.');
 $assert(2 === $shortcode_calls, 'The shortcode should run once for each allowed Divi render.');
 
-WP_CLI::success('Published-subsite selector options, core and Divi include/exclude rendering, loop-module visibility and query scoping, shortcode gating, fail-closed behavior, and module loading passed.');
+WP_CLI::success('Published-subsite selector options, active-subsite dynamic content, core and Divi include/exclude rendering, loop-module visibility and query scoping, shortcode gating, fail-closed behavior, and module loading passed.');

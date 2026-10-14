@@ -9,6 +9,7 @@ Official references:
 - [Extending the Divi 5 Visual Builder](https://dev.elegantthemes.com/docs/tutorials/general/advanced/extending-d5-visual-builder/)
 - [Divi 5 Select field API](https://dev.elegantthemes.com/api/js/divi-field-library/functions/Select/)
 - [Divi 5 Checkboxes field API](https://dev.elegantthemes.com/api/js/divi-field-library/functions/Checkboxes/)
+- [Adding a custom Divi 5 dynamic content field](https://dev.elegantthemes.com/docs/tutorials/module/advanced/custom-dynamic-content-field/adding-custom-dynamic-content-field/)
 
 The adapter uses Divi's documented server/client module registration and field library. It does not modify Divi files and exits cleanly if the active theme does not provide the Divi 5 dependency interface.
 
@@ -28,7 +29,11 @@ This confirms Visual Builder loading, module discovery, and field rendering. On 
 
 Using the saved page's actual `post_content`, WordPress `do_blocks()` rendered the marker for Guiya (subsite 23) and omitted it for Guia Gay Floripa (subsite 22). The callback output included the expected Divi module wrapper. However, the authenticated browser preview request returned HTTP 200 but displayed the page shell without the module text. Therefore saved attributes and the server block renderer are verified, but end-to-end public page output remains unresolved. The page was changed to private during diagnosis and then permanently deleted; no test page remains. The public `Sample Page` (ID 2) remains untouched. Further validation should investigate why the real front-end request differs from the direct `do_blocks()` render before claiming the Divi module is complete. The earlier drafts 34 and 36 were also disposable and are absent. The initial 03:41 fatal remains in historical container logs; subsequent builder loading had no new fatal, and the release smoke, healthy container, and Guia HTTP 200 were confirmed.
 
-The adapter's module registration follows the documented Divi 5 server/client pattern and uses the core `servinder_subsites_is_block_visible()` visibility decision. It does not edit Divi files. Divi 4 modules, page assignment, dynamic per-subsite fields, and Theme Builder templates remain unimplemented.
+The adapter's module registration follows the documented Divi 5 server/client pattern and uses the core `servinder_subsites_is_block_visible()` visibility decision. It does not edit Divi files. Divi 4 modules, additional per-subsite dynamic fields, page assignment, and Theme Builder templates remain unimplemented.
+
+## Active-subsite dynamic text source (2026-10-14)
+
+Version 0.3.0 registers **Nome do subsite atual** through Divi 5's `DynamicContentOptionBase` and `DynamicContentOptionInterface`. The option resolves through `servinder_subsites_current()` and permits draft context only when `servinder_subsites_is_preview` confirms an authorized preview. The production smoke checks registration, context resolution, extension filtering, and empty output without a context. This confirms the PHP integration contract; using the source in an authored Visual Builder field and verifying its public output still requires a browser end-to-end check.
 
 ## Adapter 0.2.0 release (2026-10-14)
 
