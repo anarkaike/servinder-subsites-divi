@@ -1,6 +1,6 @@
 {
   "name": "servinder-subsites-divi-builder",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Divi 5 Visual Builder adapter for Servinder Subsites",
   "license": "GPL-2.0-or-later",

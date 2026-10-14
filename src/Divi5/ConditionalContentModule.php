@@ -11,7 +11,7 @@ use ET\Builder\Packages\Module\Module;
 use ET\Builder\Packages\Module\Options\Element\ElementClassnames;
 use ET\Builder\Packages\ModuleLibrary\ModuleRegistration;
 
-if (!interface_exists(DependencyInterface::class) || !class_exists(ModuleRegistration::class)) {
+if (!interface_exists(DependencyInterface::class)) {
 	return;
 }
 

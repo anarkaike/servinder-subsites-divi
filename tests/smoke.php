@@ -7,6 +7,7 @@ $assert = static function (bool $condition, string $message): void {
 };
 
 $assert(function_exists('servinder_subsites'), 'Servinder Subsites core is not active.');
+$assert(class_exists('Servinder\\Subsites\\Divi\\Divi5\\ConditionalContentModule'), 'Divi server module did not load after the Divi dependency interface became available.');
 $options = [];
 $offset = 0;
 do {
