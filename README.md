@@ -2,7 +2,9 @@
 
 Optional Divi 5 adapter for [Servinder Subsites](https://github.com/anarkaike/servinder-subsites).
 
-The first module, **Conteúdo por subsite**, wraps rich content in a native Divi 5 Visual Builder module. Editors choose published subsites by name and choose whether to include or exclude that selection. Front-end visibility delegates to `servinder_subsites_is_block_visible()`, so the Divi module follows the same active context, validation, and extension filters as Gutenberg blocks.
+The **Conteúdo por subsite** module wraps rich content in a native Divi 5 Visual Builder module. Editors choose published subsites by name and choose whether to include or exclude that selection. Front-end visibility delegates to `servinder_subsites_is_block_visible()`, so the Divi module follows the same active context, validation, and extension filters as Gutenberg blocks.
+
+Modules with Divi Loop support, including **Grupo** and **Carrossel de Grupos**, also receive **Visibilidade por subsite** controls. Existing loop settings continue to select the post types, taxonomies, terms, and items to display. Their query results are scoped to content visible and available in the active subsite, and the module can be limited to all, selected, or all except selected subsites. Existing modules default to all subsites.
 
 ## Requirements
 
@@ -38,7 +40,7 @@ npm ci
 npm run build
 ```
 
-The committed `visual-builder/build/servinder-subsites-divi.js` is the production asset. Run `bin/release.sh` from a clean `main` checkout to package, back up, install network-wide, verify the shared visibility behavior, confirm network activation on every blog, and check WordPress health and the Guia public route. The CLI smoke checks server-side include/exclude rendering and that hidden content shortcodes do not execute. Visual Builder registration, saved module attributes, and public output from an authored Divi page still require verification in Divi itself.
+The committed `visual-builder/build/servinder-subsites-divi.js` is the production asset. Run `bin/release.sh` from a clean `main` checkout to package, back up, install network-wide, verify the shared visibility behavior, confirm network activation on every blog, and check WordPress health and the Guia public route. The CLI smoke checks server-side include/exclude rendering, loop-module visibility and query scoping, and that hidden content shortcodes do not execute. Visual Builder registration, saved module attributes, and public output from an authored Divi page still require verification in Divi itself.
 
 ## Scope
 

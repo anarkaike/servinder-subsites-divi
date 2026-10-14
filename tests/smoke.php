@@ -32,6 +32,45 @@ $assert(false === $hidden && false === $excluded, 'An include or exclude conditi
 $assert(true === $elsewhere, 'Exclude mode hid a subsite that was not selected.');
 
 $module = 'Servinder\\Subsites\\Divi\\Divi5\\ConditionalContentModule';
+$group_metadata = $module::add_loop_visibility_attributes([
+	'name' => 'divi/group-carousel',
+	'attributes' => ['module' => ['settings' => []]],
+]);
+$assert(isset($group_metadata['attributes']['servinderSubsiteTargets'], $group_metadata['attributes']['servinderSubsiteMode']), 'Group Carousel metadata did not receive the subsite visibility controls.');
+$assert('all' === $group_metadata['attributes']['servinderSubsiteMode']['default']['innerContent']['desktop']['value'], 'New loop modules do not default to all subsites.');
+$unrelated_metadata = $module::add_loop_visibility_attributes(['name' => 'divi/text', 'attributes' => ['module' => ['settings' => []]]]);
+$assert(!isset($unrelated_metadata['attributes']['servinderSubsiteMode']), 'A non-loop module received loop visibility controls.');
+$visible_loop_attrs = [
+	'servinderSubsiteTargets' => ['innerContent' => ['desktop' => ['value' => [(string) $active_subsite->ID]]]],
+	'servinderSubsiteMode' => ['innerContent' => ['desktop' => ['value' => 'include']]],
+];
+$hidden_wrapper = $module::filter_loop_module_wrapper('<div class="et_pb_group">Conteúdo</div>', ['attrs' => [
+	'servinderSubsiteTargets' => ['innerContent' => ['desktop' => ['value' => [(string) PHP_INT_MAX]]]],
+	'servinderSubsiteMode' => ['innerContent' => ['desktop' => ['value' => 'include']]],
+]]);
+$assert('' === $hidden_wrapper, 'A loop module outside its selected subsite was not hidden.');
+$visible_wrapper = $module::filter_loop_module_wrapper('<div class="et_pb_group">Conteúdo</div>', ['attrs' => $visible_loop_attrs]);
+$assert('' !== $visible_wrapper, 'A loop module selected for the active subsite was hidden.');
+$visible_query = $module::filter_loop_query_args([], [
+	'query_type' => 'post_type',
+	'servinder_subsite_id' => (string) $active_subsite->ID,
+	'servinder_subsite_mode' => 'include',
+	'servinder_subsite_ids' => (string) $active_subsite->ID,
+]);
+$assert(!isset($visible_query['post__in']) && (int) ($visible_query['servinder_subsites_target_subsite'] ?? 0) === (int) $active_subsite->ID, 'The visible loop query was not scoped to the active subsite.');
+$hidden_query = $module::filter_loop_query_args([], [
+	'query_type' => 'post_type',
+	'servinder_subsite_id' => (string) $active_subsite->ID,
+	'servinder_subsite_mode' => 'include',
+	'servinder_subsite_ids' => (string) PHP_INT_MAX,
+]);
+$assert([0] === ($hidden_query['post__in'] ?? []), 'A loop query outside its selected subsite returned content.');
+$all_subsites_query = $module::filter_loop_query_args(['posts_per_page' => 4], [
+	'query_type' => 'post_type',
+	'servinder_subsite_mode' => 'all',
+]);
+$assert(4 === $all_subsites_query['posts_per_page'] && !isset($all_subsites_query['post__in']), 'The all-subsites default changed a legacy loop query.');
+
 $shortcode_calls = 0;
 add_shortcode('servinder_subsites_divi_smoke', static function () use (&$shortcode_calls): string {
 	++$shortcode_calls;
@@ -51,4 +90,4 @@ $excluded_output = $module::render_conditional_content('[servinder_subsites_divi
 $assert('DIVI_CONDITIONAL_SMOKE_OUTPUT' === $excluded_output, 'The Divi adapter did not render content for an allowed exclude rule.');
 $assert(2 === $shortcode_calls, 'The shortcode should run once for each allowed Divi render.');
 
-WP_CLI::success('Published-subsite selector options, core and Divi adapter include/exclude rendering, shortcode gating, fail-closed behavior, and module loading passed.');
+WP_CLI::success('Published-subsite selector options, core and Divi include/exclude rendering, loop-module visibility and query scoping, shortcode gating, fail-closed behavior, and module loading passed.');

@@ -22,6 +22,9 @@ final class Plugin
 		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/ConditionalContentModule.php';
 
 		add_action('divi_visual_builder_assets_before_enqueue_scripts', [$this, 'register_visual_builder_assets']);
+		add_filter('block_type_metadata_settings', [\Servinder\Subsites\Divi\Divi5\ConditionalContentModule::class, 'add_loop_visibility_attributes']);
+		add_filter('divi_module_wrapper_render', [\Servinder\Subsites\Divi\Divi5\ConditionalContentModule::class, 'filter_loop_module_wrapper'], 10, 2);
+		add_filter('divi_module_options_loop_post_type_results_query_args', [\Servinder\Subsites\Divi\Divi5\ConditionalContentModule::class, 'filter_loop_query_args'], 10, 2);
 	}
 
 	public function dependency_notice(): void
@@ -40,6 +43,7 @@ final class Plugin
 		wp_register_script('servinder-subsites-divi-settings', false, [], SERVINDER_SUBSITES_DIVI_VERSION, true);
 		wp_localize_script('servinder-subsites-divi-settings', 'ServinderSubsitesDiviSettings', [
 			'subsiteOptions' => \Servinder\Subsites\Divi\Divi5\ConditionalContentModule::available_subsite_options(),
+			'currentSubsiteId' => function_exists('servinder_subsites_current') ? (int) (servinder_subsites_current()?->ID ?? 0) : 0,
 		]);
 
 		\ET\Builder\VisualBuilder\Assets\PackageBuildManager::register_package_build([
