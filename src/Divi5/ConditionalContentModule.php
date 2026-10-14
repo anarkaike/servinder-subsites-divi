@@ -183,12 +183,26 @@ final class ConditionalContentModule implements DependencyInterface
 	private static function loop_mode(array $attrs): string
 	{
 		$value = $attrs['servinderSubsiteMode']['innerContent']['desktop']['value'] ?? 'all';
-		return self::normalize_loop_mode(is_string($value) ? $value : 'all');
+		return self::normalize_loop_mode($value);
 	}
 
-	private static function normalize_loop_mode(string $mode): string
+	private static function normalize_loop_mode(mixed $mode): string
 	{
-		return in_array($mode, ['all', 'include', 'exclude'], true) ? $mode : 'all';
+		if (is_string($mode) && in_array($mode, ['all', 'include', 'exclude'], true)) {
+			return $mode;
+		}
+		if (is_int($mode) || (is_string($mode) && ctype_digit($mode))) {
+			return [0 => 'all', 1 => 'include', 2 => 'exclude'][(int) $mode] ?? 'all';
+		}
+		return 'all';
+	}
+
+	private static function normalize_content_mode(mixed $mode): string
+	{
+		if ('exclude' === $mode || 1 === $mode || '1' === $mode) {
+			return 'exclude';
+		}
+		return 'include';
 	}
 
 	/** @param list<int> $ids */
@@ -230,7 +244,7 @@ final class ConditionalContentModule implements DependencyInterface
 	{
 		$targets = $attrs['targetIds']['innerContent']['desktop']['value'] ?? [];
 		$targets = is_array($targets) ? array_values(array_filter(array_map('absint', $targets))) : [];
-		$mode = (string) ($attrs['visibilityMode']['innerContent']['desktop']['value'] ?? 'include');
+		$mode = self::normalize_content_mode($attrs['visibilityMode']['innerContent']['desktop']['value'] ?? 'include');
 		$body = $elements->render(['attrName' => 'content']);
 
 		$body = self::render_conditional_content($body, $mode, $targets, $block);
@@ -281,11 +295,12 @@ final class ConditionalContentModule implements DependencyInterface
 	}
 
 	/** @param list<int> $target_ids */
-	public static function render_conditional_content(string $content, string $mode, array $target_ids, ?\WP_Block $block = null): string
+	public static function render_conditional_content(string $content, mixed $mode, array $target_ids, ?\WP_Block $block = null): string
 	{
 		if (!function_exists('servinder_subsites_is_block_visible')) {
 			return '';
 		}
+		$mode = self::normalize_content_mode($mode);
 
 		$rule = apply_filters('servinder_subsites_divi_visibility_rule', [
 			'mode' => 'exclude' === $mode ? 'exclude' : 'include',
