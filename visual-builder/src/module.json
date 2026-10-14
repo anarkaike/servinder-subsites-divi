@@ -1,0 +1,93 @@
+{
+  "name": "servinder-subsites-divi/conditional-content",
+  "d4Shortcode": "servinder_subsites_divi_conditional_content",
+  "title": "Conteúdo por subsite",
+  "titles": "Conteúdos por subsite",
+  "category": "module",
+  "moduleClassName": "servinder_subsites_divi_conditional_content",
+  "moduleOrderClassName": "servinder_subsites_divi_conditional_content",
+  "attributes": {
+    "module": {
+      "type": "object",
+      "selector": "{{selector}}",
+      "settings": {
+        "meta": { "adminLabel": {} },
+        "decoration": { "layout": {}, "background": {}, "sizing": {}, "spacing": {}, "border": {}, "boxShadow": {}, "filters": {}, "transform": {}, "animation": {}, "overflow": {}, "disabledOn": {}, "transition": {}, "position": {}, "zIndex": {}, "scroll": {}, "sticky": {} }
+      }
+    },
+    "targetIds": {
+      "type": "object",
+      "selector": "{{selector}}",
+      "settings": {
+        "innerContent": {
+          "groupType": "group-item",
+          "item": {
+            "groupName": "mainContent",
+            "priority": 10,
+            "render": true,
+            "attrName": "targetIds.innerContent",
+            "label": "Subsites",
+            "description": "Escolha em quais subsites este conteúdo aparece.",
+            "component": {
+              "name": "divi/checkboxes",
+              "type": "field",
+              "props": { "options": [] }
+            }
+          }
+        }
+      }
+    },
+    "visibilityMode": {
+      "type": "object",
+      "settings": {
+        "innerContent": {
+          "groupType": "group-item",
+          "item": {
+            "groupName": "mainContent",
+            "priority": 20,
+            "render": true,
+            "attrName": "visibilityMode.innerContent",
+            "label": "Mostrar em",
+            "description": "Escolha se a seleção inclui ou exclui esses subsites.",
+            "component": {
+              "name": "divi/select",
+              "type": "field",
+              "props": {
+                "options": [
+                  { "label": "Os subsites selecionados", "value": "include" },
+                  { "label": "Todos, exceto os selecionados", "value": "exclude" }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "selector": "{{selector}} .servinder-subsites-divi-content",
+      "attributes": { "class": "servinder-subsites-divi-content" },
+      "tagName": "div",
+      "inlineEditor": "richText",
+      "childrenSanitizer": "et_core_esc_previously",
+      "allowHtml": true,
+      "settings": {
+        "innerContent": {
+          "groupType": "group-item",
+          "item": {
+            "groupName": "mainContent",
+            "priority": 30,
+            "render": true,
+            "attrName": "content.innerContent",
+            "label": "Conteúdo condicional",
+            "description": "Este conteúdo só aparece nos subsites definidos acima.",
+            "features": { "dynamicContent": false },
+            "component": { "name": "divi/richtext", "type": "field" }
+          }
+        },
+        "decoration": { "layout": {}, "bodyFont": {} }
+      }
+    }
+  },
+  "settings": { "content": "auto", "design": "auto", "advanced": "auto" }
+}
