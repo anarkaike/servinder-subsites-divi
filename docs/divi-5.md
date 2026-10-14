@@ -10,6 +10,7 @@ Official references:
 - [Divi 5 Select field API](https://dev.elegantthemes.com/api/js/divi-field-library/functions/Select/)
 - [Divi 5 Checkboxes field API](https://dev.elegantthemes.com/api/js/divi-field-library/functions/Checkboxes/)
 - [Adding a custom Divi 5 dynamic content field](https://dev.elegantthemes.com/docs/tutorials/module/advanced/custom-dynamic-content-field/adding-custom-dynamic-content-field/)
+- [Adding an image field to custom Divi dynamic content](https://dev.elegantthemes.com/docs/tutorials/module/advanced/custom-dynamic-content-field/adding-image-field-in-custom-dynamic-content-field/)
 
 The adapter uses Divi's documented server/client module registration and field library. It does not modify Divi files and exits cleanly if the active theme does not provide the Divi 5 dependency interface.
 
@@ -33,7 +34,7 @@ The adapter's module registration follows the documented Divi 5 server/client pa
 
 ## Active-subsite dynamic text source (2026-10-14)
 
-Version 0.3.0 registers **Nome do subsite atual** through Divi 5's `DynamicContentOptionBase` and `DynamicContentOptionInterface`. The option resolves through `servinder_subsites_current()` and permits draft context only when `servinder_subsites_is_preview` confirms an authorized preview. The production smoke checks registration, context resolution, extension filtering, and empty output without a context. This confirms the PHP integration contract; using the source in an authored Visual Builder field and verifying its public output still requires a browser end-to-end check.
+Version 0.3.0 registered **Nome do subsite atual** through Divi 5's `DynamicContentOptionBase` and `DynamicContentOptionInterface`. Version 0.4.0 adds four dynamic color values and image sources for the subsite logo and background. The shared resolver uses the core's active context; the smoke covers registration, color resolution, missing media, extension filtering, and empty output without a context. This confirms the PHP integration contract; using the sources in authored Visual Builder fields and verifying public output still requires browser end-to-end checks.
 
 ## Adapter 0.2.0 release (2026-10-14)
 

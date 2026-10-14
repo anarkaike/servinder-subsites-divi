@@ -38,9 +38,15 @@ final class Plugin
 		}
 
 		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/SubsiteNameDynamicContentOption.php';
-		$option_class = \Servinder\Subsites\Divi\Divi5\SubsiteNameDynamicContentOption::class;
-		if (class_exists($option_class)) {
-			(new $option_class())->load();
+		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/SubsiteDynamicContentContext.php';
+		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/SubsiteAppearanceDynamicContentOption.php';
+		foreach ([
+			\Servinder\Subsites\Divi\Divi5\SubsiteNameDynamicContentOption::class,
+			\Servinder\Subsites\Divi\Divi5\SubsiteAppearanceDynamicContentOption::class,
+		] as $option_class) {
+			if (class_exists($option_class)) {
+				(new $option_class())->load();
+			}
 		}
 	}
 

@@ -7,8 +7,6 @@ namespace Servinder\Subsites\Divi\Divi5;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentElements;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionBase;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionInterface;
-use WP_Post;
-
 /** Provides the active Servinder Subsite name to Divi text fields. */
 final class SubsiteNameDynamicContentOption extends DynamicContentOptionBase implements DynamicContentOptionInterface
 {
@@ -60,11 +58,8 @@ final class SubsiteNameDynamicContentOption extends DynamicContentOptionBase imp
 			return is_string($value) ? $value : '';
 		}
 
-		$subsite = function_exists('servinder_subsites_current') ? servinder_subsites_current() : null;
-		if (!$subsite instanceof WP_Post || 'servinder_subsite' !== get_post_type($subsite)) {
-			return '';
-		}
-		if ('publish' !== $subsite->post_status && !apply_filters('servinder_subsites_is_preview', false)) {
+		$subsite = SubsiteDynamicContentContext::current();
+		if (!$subsite) {
 			return '';
 		}
 

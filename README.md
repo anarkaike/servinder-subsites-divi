@@ -11,7 +11,7 @@ The **Conteúdo por subsite** module wraps rich content in a native Divi 5 Visua
 
 Modules with Divi Loop support, including **Grupo** and **Carrossel de Grupos**, also receive **Visibilidade por subsite** controls. Existing loop settings continue to select the post types, taxonomies, terms, and items to display. Their query results are scoped to content visible and available in the active subsite, and the module can be limited to all, selected, or all except selected subsites. Existing modules default to all subsites.
 
-Divi 5 text fields can use the custom **Nome do subsite atual** dynamic content source. It resolves from the core's active published-subsite context (or an authorized preview) and can be extended with `servinder_subsites_divi_dynamic_content_value`.
+Divi 5 fields can use dynamic sources for **Nome do subsite atual**, the subsite's four appearance colors, logo, and background image. They resolve from the core's active published-subsite context (or an authorized preview) and can be extended with `servinder_subsites_divi_dynamic_content_value`.
 
 ## Requirements
 
@@ -36,7 +36,7 @@ The module hides its output when no active subsite context exists. Shortcodes in
 - `servinder_subsites_divi_visibility_rule` — receives the proposed core rule and `WP_Block`; return a validated rule array.
 - `servinder_subsites_divi_is_visible` — receives the core decision, rule, and block; return the final visibility boolean.
 - `servinder_subsites_divi_rendered_content` — receives rendered content, rule, and block; return the final output.
-- `servinder_subsites_divi_dynamic_content_value` — receives the active subsite name, source name, subsite post, and Divi data arguments; return the text value.
+- `servinder_subsites_divi_dynamic_content_value` — receives the active subsite value, source name, subsite post, and Divi data arguments; return the value for type-specific validation.
 
 For core visibility behavior and API contracts, see the [core API reference](https://github.com/anarkaike/servinder-subsites/blob/main/docs/api.md).
 
@@ -54,4 +54,4 @@ The committed `visual-builder/build/servinder-subsites-divi.js` is the productio
 
 ## Scope
 
-This release provides a conditional content module, Loop visibility controls, and the active-subsite name as a dynamic text source for Divi 5. Divi 4 modules, additional dynamic fields (including appearance and media), Divi Theme Builder template assignment, and per-subsite page assignment remain planned.
+This release provides a conditional content module, Loop visibility controls, and dynamic Divi 5 text, color, and image sources for active subsite values. Route, additional media metadata, Divi 4 modules, Divi Theme Builder template assignment, and per-subsite page assignment remain planned.

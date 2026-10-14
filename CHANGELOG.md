@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+- Expose per-subsite primary, accent, surface, and text colors as Divi dynamic color sources.
+- Expose per-subsite logo and background image as Divi dynamic image sources.
+- Reuse the shared validated active-subsite context and normalized core appearance API.
+- Extend smoke coverage for dynamic option registration, color resolution, missing media, and context isolation.
+
 ## 0.3.0
 
 - Register the active subsite name as an official Divi 5 dynamic text source.

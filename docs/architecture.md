@@ -8,7 +8,7 @@ Content is evaluated server-side. Without an active published subsite context, t
 
 The production WP-CLI smoke invokes the adapter's conditional rendering method against an active published subsite. It checks include and exclude outcomes, confirms a shortcode runs for visible content, and confirms it is not evaluated when content is hidden. This exercises the server rule mapping without relying on Visual Builder UI automation; it does not prove that a saved Divi page serializes module attributes correctly or that the module wrapper renders on a public page.
 
-The adapter also registers an official Divi 5 dynamic content option for the active subsite title. It reads only `servinder_subsites_current()` from the core, permits drafts only during the core's authorized preview context, and returns an empty value when no valid context is active. Its extension filter runs before HTML escaping. This is a text source; appearance and media values remain future adapter work.
+The adapter registers Divi 5 dynamic text, color, and image options for the active subsite title and normalized appearance (four colors, logo, and background image). A shared context resolver reads only the core API and permits drafts only during the core's authorized preview. Missing context or appearance values return empty output. The extension filter runs before type-specific validation and escaping.
 
 Divi's select fields can serialize options as numeric indexes. The adapter maps the conditional-content indexes `0/1` to `include/exclude` and Loop indexes `0/1/2` to `all/include/exclude`; the production smoke covers these mappings, loop wrapper decisions, and query scoping.
 
@@ -22,5 +22,5 @@ An authenticated disposable Divi page was saved and inspected on 2026-10-14. Its
 
 - Divi 5 is supported. Divi 4 does not receive a native module from this release.
 - Theme Builder templates and page assignment per subsite are not implemented.
-- Dynamic content currently covers only the active subsite name in text fields; color, logo, image, audio/video, and route sources are not implemented.
+- Dynamic content covers the active subsite name, four appearance colors, logo, and background image. Image alt text, route, audio/video, Divi 4, Theme Builder templates, and page assignment are not implemented.
 - The selector lists published records in the current WordPress blog; it does not merge records across Multisite blogs.

@@ -10,6 +10,8 @@ $assert(function_exists('servinder_subsites'), 'Servinder Subsites core is not a
 $assert(class_exists('Servinder\\Subsites\\Divi\\Divi5\\ConditionalContentModule'), 'Divi server module did not load after the Divi dependency interface became available.');
 $dynamic_option_class = 'Servinder\\Subsites\\Divi\\Divi5\\SubsiteNameDynamicContentOption';
 $assert(class_exists($dynamic_option_class), 'The active-subsite dynamic content option did not load.');
+$appearance_option_class = 'Servinder\\Subsites\\Divi\\Divi5\\SubsiteAppearanceDynamicContentOption';
+$assert(class_exists($appearance_option_class), 'The subsite appearance dynamic content option did not load.');
 $options = [];
 $offset = 0;
 do {
@@ -26,8 +28,16 @@ $assert(is_string($options_json) && false !== json_decode($options_json), 'The V
 add_filter('servinder_subsites_current_subsite', static fn() => $active_subsite, PHP_INT_MAX);
 $dynamic_option = new $dynamic_option_class();
 $dynamic_option->load();
+$appearance_option = new $appearance_option_class();
+$appearance_option->load();
 $dynamic_options = apply_filters('divi_module_dynamic_content_options', [], 0, 'edit');
 $assert(isset($dynamic_options['servinder_subsite_name']) && 'text' === $dynamic_options['servinder_subsite_name']['type'], 'The Divi dynamic text source was not registered.');
+$assert('color' === ($dynamic_options['servinder_subsite_primary_color']['type'] ?? ''), 'The primary color dynamic source was not registered as a color.');
+$assert('color' === ($dynamic_options['servinder_subsite_accent_color']['type'] ?? ''), 'The accent color dynamic source was not registered as a color.');
+$assert('color' === ($dynamic_options['servinder_subsite_surface_color']['type'] ?? ''), 'The surface color dynamic source was not registered as a color.');
+$assert('color' === ($dynamic_options['servinder_subsite_text_color']['type'] ?? ''), 'The text color dynamic source was not registered as a color.');
+$assert('image' === ($dynamic_options['servinder_subsite_logo']['type'] ?? ''), 'The logo dynamic source was not registered as an image.');
+$assert('image' === ($dynamic_options['servinder_subsite_background_image']['type'] ?? ''), 'The background image dynamic source was not registered as an image.');
 $dynamic_data_args = ['name' => 'servinder_subsite_name', 'settings' => []];
 $dynamic_output = apply_filters('divi_module_dynamic_content_resolved_value', '', $dynamic_data_args);
 $assert(str_contains($dynamic_output, esc_html(get_the_title($active_subsite))), 'The Divi dynamic source did not resolve the active subsite name.');
@@ -47,6 +57,39 @@ add_filter('servinder_subsites_divi_dynamic_content_value', $dynamic_value_filte
 $filtered_dynamic_output = apply_filters('divi_module_dynamic_content_resolved_value', '', $dynamic_data_args);
 remove_filter('servinder_subsites_divi_dynamic_content_value', $dynamic_value_filter, 10);
 $assert($dynamic_filter_called && str_contains($filtered_dynamic_output, 'Nome filtrado'), 'The dynamic content extension filter did not receive the active subsite value.');
+$appearance_filter = static function (array $appearance, int $subsite_id) use ($active_subsite): array {
+	if ((int) $active_subsite->ID !== $subsite_id) {
+		return $appearance;
+	}
+	return array_merge($appearance, [
+		'primary_color' => '#123abc',
+		'accent_color' => '#234bcd',
+		'surface_color' => '#345cde',
+		'text_color' => '#456def',
+		'logo_id' => 0,
+		'background_image_id' => 0,
+	]);
+};
+add_filter('servinder_subsites_appearance', $appearance_filter, 99, 2);
+$primary_color = apply_filters('divi_module_dynamic_content_resolved_value', '', ['name' => 'servinder_subsite_primary_color', 'settings' => []]);
+$surface_color = apply_filters('divi_module_dynamic_content_resolved_value', '', ['name' => 'servinder_subsite_surface_color', 'settings' => []]);
+$assert('#123abc' === $primary_color && '#345cde' === $surface_color, 'The Divi color sources did not resolve normalized subsite appearance values.');
+$invalid_color_filter = static fn(mixed $value, string $option_name): mixed => 'servinder_subsite_primary_color' === $option_name ? 'red' : $value;
+add_filter('servinder_subsites_divi_dynamic_content_value', $invalid_color_filter, 10, 2);
+$invalid_color = apply_filters('divi_module_dynamic_content_resolved_value', '', ['name' => 'servinder_subsite_primary_color', 'settings' => []]);
+remove_filter('servinder_subsites_divi_dynamic_content_value', $invalid_color_filter, 10);
+$assert('' === $invalid_color, 'The Divi color source accepted an invalid extension value.');
+$missing_logo = apply_filters('divi_module_dynamic_content_resolved_value', '', ['name' => 'servinder_subsite_logo', 'settings' => []]);
+$missing_background = apply_filters('divi_module_dynamic_content_resolved_value', '', ['name' => 'servinder_subsite_background_image', 'settings' => []]);
+$assert('' === $missing_logo && '' === $missing_background, 'An unset subsite image source should resolve to an empty value.');
+$image_value_filter = static function (mixed $value, string $option_name): mixed {
+	return 'servinder_subsite_logo' === $option_name ? 'https://example.com/servinder-subsite-logo.png' : $value;
+};
+add_filter('servinder_subsites_divi_dynamic_content_value', $image_value_filter, 10, 2);
+$filtered_logo = apply_filters('divi_module_dynamic_content_resolved_value', '', ['name' => 'servinder_subsite_logo', 'settings' => []]);
+remove_filter('servinder_subsites_divi_dynamic_content_value', $image_value_filter, 10);
+$assert(str_contains($filtered_logo, 'https://example.com/servinder-subsite-logo.png'), 'The Divi image source did not format a filtered image URL.');
+remove_filter('servinder_subsites_appearance', $appearance_filter, 99);
 $rule = ['mode' => 'include', 'subsiteIds' => [(int) $active_subsite->ID]];
 $visible = servinder_subsites_is_block_visible($rule);
 $hidden = servinder_subsites_is_block_visible(['mode' => 'include', 'subsiteIds' => [PHP_INT_MAX]]);

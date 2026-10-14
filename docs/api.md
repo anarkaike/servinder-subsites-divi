@@ -23,7 +23,19 @@ The server renderer applies `servinder_subsites_is_block_visible()` with `mode` 
 
 ## Dynamic content
 
-The Divi 5 text source **Nome do subsite atual** resolves the title of the active published subsite. It also resolves an unpublished subsite only in a core-authorized preview context. Requests without a valid active context return an empty value. Other dynamic fields such as colors, logo, background image, and route are not yet provided by this adapter.
+The adapter registers these Divi 5 dynamic sources from the core's normalized subsite appearance API:
+
+| Name | Divi type | Core value |
+|---|---|---|
+| `servinder_subsite_name` | `text` | Active subsite title |
+| `servinder_subsite_primary_color` | `color` | `primary_color` |
+| `servinder_subsite_accent_color` | `color` | `accent_color` |
+| `servinder_subsite_surface_color` | `color` | `surface_color` |
+| `servinder_subsite_text_color` | `color` | `text_color` |
+| `servinder_subsite_logo` | `image` | `logo_id` attachment URL |
+| `servinder_subsite_background_image` | `image` | `background_image_id` attachment URL |
+
+Sources resolve only for the active published subsite or a core-authorized preview; requests without a valid context return an empty value. Color output is validated as a hex color. An unset/invalid attachment returns an empty image value. Route and image alternative-text sources are not yet provided.
 
 ## Hooks
 
@@ -54,5 +66,5 @@ These hooks do not change the core API, global post status, or subsite visibilit
 
 Filter the text value emitted by the active-subsite dynamic content option.
 
-- Arguments: string value, option name (`servinder_subsite_name`), active `WP_Post`, and Divi data arguments.
-- Return: scalar value. Non-scalar results produce an empty string; the final text is HTML-escaped by the adapter.
+- Arguments: source value, option name, active `WP_Post`, and Divi data arguments.
+- Return: scalar value. Non-scalar results produce an empty string; text, colors, and image URLs are escaped or validated according to their Divi type.
