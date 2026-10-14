@@ -94,7 +94,12 @@ ssh "$remote_host" "/usr/local/bin/wp eval-file '/tmp/$plugin_slug-smoke.php' --
 site_urls="$(ssh "$remote_host" "/usr/local/bin/wp site list --field=url --url='$network_url'")"
 while IFS= read -r site_url; do
 	[[ -n "$site_url" ]] || continue
-	ssh "$remote_host" "/usr/local/bin/wp plugin status '$plugin_slug' --url='$site_url'"
+	plugin_state="$(ssh "$remote_host" "/usr/local/bin/wp plugin list --field=status --name='$plugin_slug' --url='$site_url'")"
+	if [[ "$plugin_state" != "active-network" ]]; then
+		printf 'Expected network-active status for %s on %s, got: %s\n' "$plugin_slug" "$site_url" "${plugin_state:-missing}" >&2
+		exit 1
+	fi
+	printf '%s: %s on %s\n' "$plugin_slug" "$plugin_state" "$site_url"
 done <<< "$site_urls"
 
 container_health="$(ssh "$remote_host" "docker inspect '$container_name' --format '{{.State.Health.Status}}'")"
