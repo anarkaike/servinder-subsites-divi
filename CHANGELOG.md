@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.2
+
+- Correct the root-only Theme Builder template filter syntax.
+
+
 ## 0.6.1
 
 - Restrict selected Theme Builder layouts to the subsite root/front page.

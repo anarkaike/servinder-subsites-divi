@@ -73,7 +73,7 @@ final class ThemeBuilderTemplates
 		}
 
 		$is_subsite_home = (function_exists('is_front_page') && is_front_page())
-			|| (class_exists('Servinder\\Subsites\\Features\\ContextResolver') && \Servinder\Subsites\Features\\ContextResolver::is_root_request());
+			|| (class_exists('Servinder\\Subsites\\Features\\ContextResolver') && \Servinder\Subsites\Features\ContextResolver::is_root_request());
 		if (!$is_subsite_home) {
 			return $layouts;
 		}
