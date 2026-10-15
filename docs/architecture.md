@@ -21,6 +21,6 @@ An authenticated disposable Divi page was saved and inspected on 2026-10-14. Its
 ## Current limits
 
 - Divi 5 is supported. Divi 4 does not receive a native module from this release.
-- Theme Builder templates and page assignment per subsite are not implemented.
-- Dynamic content covers the active subsite name, four appearance colors, logo, and background image. Image alt text, route, audio/video, Divi 4, Theme Builder templates, and page assignment are not implemented.
+- Theme Builder template assignment is stored by the optional adapter and applied only to the active subsite home through Divi’s `et_theme_builder_template_layouts` filter. Per-subsite WordPress page assignment is not implemented.
+- Dynamic content covers the active subsite name, four appearance colors, logo, and background image. Image alt text, route, audio/video, Divi 4, and per-subsite page assignment are not implemented.
 - The selector lists published records in the current WordPress blog; it does not merge records across Multisite blogs.

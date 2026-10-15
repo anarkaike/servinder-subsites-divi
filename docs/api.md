@@ -37,6 +37,10 @@ The adapter registers these Divi 5 dynamic sources from the core's normalized su
 
 Sources resolve only for the active published subsite or a core-authorized preview; requests without a valid context return an empty value. Color output is validated as a hex color. An unset/invalid attachment returns an empty image value. Route and image alternative-text sources are not yet provided.
 
+## Theme Builder template assignment
+
+The step 2 subsite wizard lists enabled Divi Theme Builder templates that override at least one layout. The selected template ID is stored on that subsite by the adapter. On the active subsite home, the adapter supplies the selected template’s header, body, and footer layout configuration through Divi’s `et_theme_builder_template_layouts` filter. Choosing “Use site default” removes the assignment. The template remains authored and managed in Divi Theme Builder.
+
 ## Hooks
 
 ### `servinder_subsites_divi_visibility_rule`

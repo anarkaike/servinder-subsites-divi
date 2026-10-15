@@ -20,6 +20,8 @@ final class Plugin
 		}
 		require_once $dependency_interface;
 		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/ConditionalContentModule.php';
+		require_once SERVINDER_SUBSITES_DIVI_PATH . 'src/Divi5/ThemeBuilderTemplates.php';
+		(new \Servinder\Subsites\Divi\Divi5\ThemeBuilderTemplates())->register();
 
 		add_action('init', [$this, 'register_dynamic_content'], 20);
 		add_action('divi_visual_builder_assets_before_enqueue_scripts', [$this, 'register_visual_builder_assets']);

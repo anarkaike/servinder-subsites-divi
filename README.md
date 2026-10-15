@@ -20,6 +20,8 @@ Divi 5 fields can use dynamic sources for **Nome do subsite atual**, the subsite
 - Servinder Subsites plugin (separate product)
 - Divi 5
 
+The subsite wizard can assign a published Divi Theme Builder template to that subsite’s home, reusing its configured header, body, and footer. The assignment is stored by this optional adapter and does not change the site template on other routes. Create the template in **Divi → Theme Builder** first; templates without configured layouts are not offered.
+
 The adapter has no runtime dependency on WooCommerce, ACF, or other extensions. It loads after the active theme is available, then registers the module through Divi 5’s module dependency tree and the official Divi dynamic-content API. If Divi 5 or Servinder Subsites is unavailable, it displays an administrator notice and does not load Divi integration code.
 
 ## Use
@@ -54,4 +56,4 @@ The committed `visual-builder/build/servinder-subsites-divi.js` is the productio
 
 ## Scope
 
-This release provides a conditional content module, Loop visibility controls, and dynamic Divi 5 text, color, and image sources for active subsite values. Route, additional media metadata, Divi 4 modules, Divi Theme Builder template assignment, and per-subsite page assignment remain planned.
+This release provides a conditional content module, Loop visibility controls, and dynamic Divi 5 text, color, and image sources for active subsite values. Route, additional media metadata, Divi 4 modules, and per-subsite page assignment remain planned.

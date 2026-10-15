@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+
+- Add per-subsite Divi Theme Builder template selection for subsite home requests.
+- Reuse the selected template's configured header, body, and footer layouts without changing other pages.
+
+
 ## 0.5.0
 
 - Align the Loop visibility fields with Divi 5's field contract, including explicit field defaults and supported feature flags.
