@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.1
+
+- Restrict selected Theme Builder layouts to the subsite root/front page.
+
+
 ## 0.6.0
 
 - Add per-subsite Divi Theme Builder template selection for subsite home requests.
